@@ -1,0 +1,44 @@
+import profesionales.*
+
+describe "Tests de Profesionales"{
+	//Universidades
+	const unahur = new Universidad(provincia="Buenos Aires", honorariosRecomendados=1000)
+	const uba = new Universidad(provincia="Buenos Aires", honorariosRecomendados=1500)
+	const unsal = new Universidad(provincia="Salta", honorariosRecomendados=1200)
+	const unc = new Universidad(provincia="Cordoba", honorariosRecomendados=20)
+	//Profesionales
+	const francock = new ProfesionalLibre(universidad = unahur, honorariosPorHora=4000, provinciasDondePuedeTrabajar = #{"Buenos Aires", "La Pampa"})
+	const nacho = new ProfesionalAsociado(universidad = unsal)
+	const pablen = new ProfesionalVinculado(universidad = unc)
+	//Empresa
+	const sancor = new Empresa(honorarios = 1000, profesionales=[francock, pablen])
+	const nintendo = new Empresa(honorarios = 3500, profesionales=[francock, nacho])	
+	const mercadoLibre = new Empresa(honorarios = 500, profesionales=[pablen, nacho])
+	
+	
+	test "Sancor tiene 1 profesional de la unahur"{
+		assert.equals(sancor.profesionalesDeUniversidad(unahur),1)
+		
+	}
+	
+	test "El honorario caro de nintendo es Franco"{
+		assert.equals(nintendo.profesionalesCaros(),[francock])
+		
+	}
+	
+	test "Los profesionales de meli son de la unc y unsal"{
+		assert.equals(mercadoLibre.universidadesDeProfesionales(),#{unc, unsal})
+		
+	}
+	test "El mas barato de meli es nacho"{
+		assert.equals(mercadoLibre.profesionalMasBarato(),pablen)
+	}
+	
+	test "El personal de sancor no es de gente acotada"{
+		assert.that(sancor.genteAcotada())
+	}
+	
+	
+	
+
+}
